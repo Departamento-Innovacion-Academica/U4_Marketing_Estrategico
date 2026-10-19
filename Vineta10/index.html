@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viñetas Animadas Caricaturescas</title>
+  <!-- Fuente Poppins de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,800;1,700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #f3f8f6;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #000000;
+      
+      /* Colores caricaturescos vibrantes */
+      --c-yellow: #ffde59;
+      --c-pink: #ff66c4;
+      --c-cyan: #00f0ff;
+      --c-green: #7ed957;
+      --c-orange: #ff914d;
+      --c-purple: #cb6ce6;
+      --c-blue: #38b6ff;
+      --c-red: #ff5757;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    /* Contenedor principal estilo Cómic / Neobrutalismo */
+    .comic-container {
+      width: 100%;
+      max-width: 850px;
+      background: var(--card-bg);
+      border: 4px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 10px 10px 0px var(--border-color);
+      position: relative;
+    }
+
+    .header-tag {
+      display: inline-block;
+      background: var(--c-yellow);
+      border: 3px solid var(--border-color);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 4px 4px 0px var(--border-color);
+      margin-bottom: 1.5rem;
+      transform: rotate(-2deg);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+
+    .replay-btn {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: var(--c-cyan);
+      border: 3px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 4px 4px 0px var(--border-color);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .replay-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0px var(--border-color);
+      background: var(--c-yellow);
+    }
+
+    .replay-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--border-color);
+    }
+
+    /* Lista de viñetas */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-align: left;
+    }
+
+    /* Ítem de lista */
+    .bullet-item {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1rem 1.25rem;
+      background: #ffffff;
+      border: 3px solid var(--border-color);
+      border-radius: 18px;
+      box-shadow: 5px 5px 0px var(--border-color);
+      cursor: pointer;
+      position: relative;
+      text-align: left;
+
+      /* Animación de entrada por defecto */
+      opacity: 0;
+      animation: bounceInLeft 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                  box-shadow 0.2s ease, 
+                  background-color 0.2s ease;
+    }
+
+    /* Tiempos escalonados para la entrada */
+    .bullet-item:nth-child(1) { animation-delay: 0.1s; --item-accent: var(--c-yellow); }
+    .bullet-item:nth-child(2) { animation-delay: 0.2s; --item-accent: var(--c-pink); }
+    .bullet-item:nth-child(3) { animation-delay: 0.3s; --item-accent: var(--c-cyan); }
+    .bullet-item:nth-child(4) { animation-delay: 0.4s; --item-accent: var(--c-green); }
+    .bullet-item:nth-child(5) { animation-delay: 0.5s; --item-accent: var(--c-orange); }
+    .bullet-item:nth-child(6) { animation-delay: 0.6s; --item-accent: var(--c-purple); }
+    .bullet-item:nth-child(7) { animation-delay: 0.7s; --item-accent: var(--c-blue); }
+    .bullet-item:nth-child(8) { animation-delay: 0.8s; --item-accent: var(--c-red); }
+
+    /* Efectos HOVER en la fila */
+    .bullet-item:hover {
+      transform: translate(-4px, -4px) scale(1.02) rotate(-0.5deg);
+      box-shadow: 9px 9px 0px var(--border-color);
+      background-color: #fafafa;
+    }
+
+    /* Icono / Viñeta caricaturesca */
+    .bullet-icon {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      background: var(--item-accent);
+      border: 3px solid var(--border-color);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 3px 3px 0px var(--border-color);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+      user-select: none;
+    }
+
+    .bullet-item:hover .bullet-icon {
+      transform: scale(1.25) rotate(12deg);
+      animation: pulseCartoony 0.6s infinite alternate;
+    }
+
+    /* Texto de las viñetas */
+    .bullet-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-color);
+      line-height: 1.4;
+      text-align: left;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .bullet-item:hover .bullet-text {
+      transform: translateX(4px);
+      color: #000;
+    }
+
+    /* Destello / Onomatopeya flotante estilo cómic */
+    .bullet-item::after {
+      content: '✦';
+      position: absolute;
+      right: 15px;
+      top: -12px;
+      font-size: 1.5rem;
+      color: var(--item-accent);
+      -webkit-text-stroke: 1.5px var(--border-color);
+      opacity: 0;
+      transform: scale(0) rotate(-20deg);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .bullet-item:hover::after {
+      opacity: 1;
+      transform: scale(1.3) rotate(15deg);
+    }
+
+    /* Keyframes de animación de entrada con rebote */
+    @keyframes bounceInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-100px) scale(0.7) rotate(-5deg);
+      }
+      60% {
+        opacity: 1;
+        transform: translateX(15px) scale(1.05) rotate(2deg);
+      }
+      80% {
+        transform: translateX(-5px) scale(0.98) rotate(-1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes pulseCartoony {
+      0% {
+        transform: scale(1.2) rotate(8deg);
+      }
+      100% {
+        transform: scale(1.35) rotate(-8deg);
+      }
+    }
+
+    /* Responsivo */
+    @media (max-width: 600px) {
+      .comic-container {
+        padding: 1.5rem;
+      }
+      .bullet-text {
+        font-size: 0.95rem;
+      }
+      .bullet-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="comic-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+      <span class="header-tag">Puntos Clave</span>
+      <div class="actions">
+        <button class="replay-btn" id="replayBtn">
+          <span>⚡ Reiniciar Animación</span>
+        </button>
+      </div>
+    </div>
+
+    <ul class="bullet-list" id="bulletList">
+      <li class="bullet-item">
+        <div class="bullet-icon">🏠</div>
+        <span class="bullet-text">Apartamentos modelo, salas de ventas y muestras de materiales.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">🏢</div>
+        <span class="bullet-text">Oficinas y espacios de atención.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">📁</div>
+        <span class="bullet-text">Portafolios de proyectos realizados.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">📐</div>
+        <span class="bullet-text">Planos, renders y modelos digitales.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">📊</div>
+        <span class="bullet-text">Informes y otros entregables técnicos.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">📜</div>
+        <span class="bullet-text">Certificaciones y acreditaciones.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">💼</div>
+        <span class="bullet-text">Documentos comerciales y corporativos.</span>
+      </li>
+      <li class="bullet-item">
+        <div class="bullet-icon">🎨</div>
+        <span class="bullet-text">Elementos relacionados con la imagen e identidad visual de la organización.</span>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // Script para reiniciar la animación de entrada al hacer clic en el botón
+    const replayBtn = document.getElementById('replayBtn');
+    const bulletList = document.getElementById('bulletList');
+
+    replayBtn.addEventListener('click', () => {
+      const items = bulletList.querySelectorAll('.bullet-item');
+      items.forEach(item => {
+        item.style.animation = 'none';
+        item.offsetHeight; /* Trigger reflow */
+        item.style.animation = '';
+      });
+    });
+  </script>
+</body>
+</html>
