@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario Interactivo - Estrategia de Marketing y Diagnóstico Comercial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* --- VARIABLES DE COLOR --- */
+        :root {
+            --primary-brand: #054C50;
+            --primary-hover: #04393b;
+            --bg-light: #ececec;
+            --text-dark: #333333;
+            --white: #ffffff;
+            --disabled-gray: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: radial-gradient(#d0d0d0 1px, transparent 1px);
+            background-size: 10px 10px;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* --- PANTALLA INICIAL (PORTADA) --- */
+        .welcome-screen {
+            background: var(--white);
+            width: 100%;
+            max-width: 650px;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(5, 76, 80, 0.12);
+            text-align: center;
+            position: absolute;
+            transition: all 0.4s ease-in-out;
+            border-top: 6px solid var(--primary-brand);
+            z-index: 10;
+        }
+
+        .welcome-badge {
+            background-color: rgba(5, 76, 80, 0.08);
+            color: var(--primary-brand);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .welcome-screen h1 {
+            color: var(--text-dark);
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+        }
+
+        .welcome-screen h1 span {
+            color: var(--primary-brand);
+            display: block;
+        }
+
+        .welcome-screen p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0 auto 35px auto;
+            max-width: 480px;
+        }
+
+        .start-btn {
+            background-color: var(--primary-brand);
+            color: var(--white);
+            border: none;
+            padding: 15px 45px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(5, 76, 80, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            outline: none;
+        }
+
+        .start-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 76, 80, 0.4);
+        }
+
+        .welcome-screen.hidden-screen {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        /* --- CONTENEDOR DEL GLOSARIO --- */
+        .glossary-widget {
+            width: 100%;
+            max-width: 900px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            position: absolute;
+        }
+
+        .glossary-widget.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            position: relative;
+        }
+
+        .instruction-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .instruction-badge {
+            background-color: var(--primary-brand);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulse-attention 2s infinite;
+        }
+
+        @keyframes pulse-attention {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 76, 80, 0.4); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(5, 76, 80, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(5, 76, 80, 0); }
+        }
+
+        .glossary-header {
+            background-color: var(--primary-brand);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .glossary-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .glossary-body {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start; 
+        }
+
+        .tabs-container {
+            display: flex;
+            flex-direction: column;
+            width: 140px;
+            flex-shrink: 0;
+            background-color: var(--primary-brand);
+            border-radius: 15px;
+            padding: 10px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px; 
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--white);
+            border: none;
+            padding: 15px 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            outline: none;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-light);
+            color: var(--primary-brand);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .content-area {
+            flex-grow: 1;
+            background-color: var(--bg-light);
+            border-radius: 15px;
+            padding: 40px;
+            min-height: 450px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .definition-item {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 5px solid var(--primary-brand);
+        }
+
+        .definition-item h3 {
+            color: var(--primary-brand);
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .definition-item p {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            text-align: left;
+        }
+
+        .hidden { display: none !important; }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-group.animate-in .definition-item {
+            animation: slideUpFade 0.5s ease-out forwards;
+            opacity: 0; 
+        }
+
+        .content-group.animate-in .definition-item:nth-child(1) { animation-delay: 0.1s; }
+        .content-group.animate-in .definition-item:nth-child(2) { animation-delay: 0.2s; }
+        .content-group.animate-in .definition-item:nth-child(3) { animation-delay: 0.3s; }
+        .content-group.animate-in .definition-item:nth-child(4) { animation-delay: 0.4s; }
+        .content-group.animate-in .definition-item:nth-child(5) { animation-delay: 0.5s; }
+        .content-group.animate-in .definition-item:nth-child(6) { animation-delay: 0.6s; }
+        .content-group.animate-in .definition-item:nth-child(7) { animation-delay: 0.7s; }
+        .content-group.animate-in .definition-item:nth-child(8) { animation-delay: 0.8s; }
+        .content-group.animate-in .definition-item:nth-child(9) { animation-delay: 0.9s; }
+
+        @media (max-width: 768px) {
+            body { align-items: flex-start; padding: 20px 10px; }
+            .glossary-body { flex-direction: column; }
+            .tabs-container { width: 100%; flex-direction: row; position: static; }
+            .tab-btn { flex: 1; border-bottom: none; border-right: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+            .tab-btn.active { border-radius: 10px 10px 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA INICIAL (PORTADA) -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-badge">Recurso Interactivo</div>
+        <h1>Glosario de la Unidad <span>Estrategia de Marketing y Diagnóstico Comercial</span></h1>
+        <p>Explora los conceptos clave sobre métricas, matrices estratégicas, herramientas de diagnóstico y marketing inmobiliario de forma interactiva.</p>
+        <button class="start-btn" onclick="startGlossary()">
+            Iniciar Recurso <span>➔</span>
+        </button>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL DEL GLOSARIO -->
+    <div class="glossary-widget" id="glossaryWidget">
+        <div class="instruction-wrapper">
+            <div class="instruction-badge">
+                <span>👆</span> Haga Clic sobre los botones para ampliar la información
+            </div>
+        </div>
+
+        <div class="glossary-header">
+            <h2>Glosario de Estrategia de Marketing y Diagnóstico Comercial</h2>
+        </div>
+
+        <div class="glossary-body">
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="filterContent('A-E', this)">A – E</button>
+                <button class="tab-btn" onclick="filterContent('I-M', this)">I – M</button>
+                <button class="tab-btn" onclick="filterContent('O-T', this)">O – T</button>
+            </div>
+
+            <div class="content-area">
+                <!-- Grupo A – E -->
+                <div class="content-group animate-in" id="group-A-E">
+                    <div class="definition-item">
+                        <h3>Absorción inmobiliaria</h3>
+                        <p>Ritmo al que se venden o comercializan los inmuebles disponibles en un mercado durante un periodo determinado.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Benchmarking competitivo</h3>
+                        <p>Práctica de comparar una organización, sus productos o sus formas de trabajo con las de otros competidores para reconocer diferencias y oportunidades de mejora.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Costo de adquisición de clientes (CAC)</h3>
+                        <p>Valor promedio que una organización invierte en actividades de marketing y ventas para conseguir un nuevo cliente.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Diagnóstico estratégico</h3>
+                        <p>Revisión de la situación de una organización y de las condiciones de su entorno como punto de partida para tomar decisiones y definir estrategias.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Embudo de ventas</h3>
+                        <p>Recorrido que sigue un posible cliente desde que conoce una oferta hasta que finalmente realiza una compra o contrata un servicio.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Evidencia física</h3>
+                        <p>Elementos que el cliente puede observar y que le ayudan a formarse una impresión sobre la empresa y el servicio que recibe. Puede incluir instalaciones, documentos, materiales, equipos o la presentación del personal.</p>
+                    </div>
+                </div>
+
+                <!-- Grupo I – M -->
+                <div class="content-group hidden" id="group-I-M">
+                    <div class="definition-item">
+                        <h3>Indicador clave de desempeño (KPI)</h3>
+                        <p>Medida utilizada para hacer seguimiento a un resultado o conocer el grado de cumplimiento de un objetivo.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Marketing mix ampliado (7 Ps)</h3>
+                        <p>Modelo de marketing compuesto por siete elementos: producto, precio, plaza, promoción, personas, procesos y evidencia física.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Matriz de Ansoff</h3>
+                        <p>Herramienta utilizada para estudiar alternativas de crecimiento a partir de cuatro opciones: penetración de mercado, desarrollo de producto, desarrollo de mercado y diversificación.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Matriz DOFA/TOWS</h3>
+                        <p>Herramienta que organiza las fortalezas y debilidades de una organización junto con las oportunidades y amenazas de su entorno, con el fin de analizar posibles estrategias.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Matriz PESTEL</h3>
+                        <p>Forma de estudiar el entorno a partir de factores políticos, económicos, socioculturales, tecnológicos, ecológicos y legales que pueden afectar a una organización o mercado.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Mercado objetivo</h3>
+                        <p>Grupo de clientes al que una organización decide dirigir principalmente su oferta y sus acciones de marketing.</p>
+                    </div>
+                </div>
+
+                <!-- Grupo O – T -->
+                <div class="content-group hidden" id="group-O-T">
+                    <div class="definition-item">
+                        <h3>Objetivo SMART</h3>
+                        <p>Objetivo formulado de manera específica, medible, alcanzable, relevante y con un tiempo definido para su cumplimiento.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Plan de marketing</h3>
+                        <p>Documento en el que se organizan los objetivos de marketing, las estrategias y acciones previstas, los recursos necesarios y la forma en la que se hará seguimiento a los resultados.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Posicionamiento</h3>
+                        <p>Forma en que una empresa, marca o producto busca ser reconocido y diferenciado por los clientes frente a otras alternativas del mercado.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>PropTech</h3>
+                        <p>Uso de tecnologías digitales en actividades relacionadas con el desarrollo, comercialización, operación y gestión de bienes inmuebles.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Propuesta de valor</h3>
+                        <p>Beneficios y características que una organización ofrece para responder a las necesidades de sus clientes y darles razones para elegirla frente a otras alternativas.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Retorno de la inversión en marketing (ROMI)</h3>
+                        <p>Indicador utilizado para comparar los resultados económicos obtenidos mediante las acciones de marketing con los recursos invertidos en ellas.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Segmentación de mercado</h3>
+                        <p>Proceso de organizar un mercado en grupos de clientes que comparten determinadas características, necesidades o comportamientos.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Tasa de absorción</h3>
+                        <p>Proporción del inventario inmobiliario disponible que se comercializa durante un periodo determinado.</p>
+                    </div>
+                    <div class="definition-item">
+                        <h3>Tasa de conversión</h3>
+                        <p>Porcentaje de oportunidades comerciales que alcanzan el resultado esperado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function startGlossary() {
+        const welcome = document.getElementById('welcomeScreen');
+        const glossary = document.getElementById('glossaryWidget');
+        
+        welcome.classList.add('hidden-screen');
+        glossary.classList.add('show');
+    }
+
+    function filterContent(groupId, btnElement) {
+        const groups = document.querySelectorAll('.content-group');
+        groups.forEach(group => {
+            group.classList.add('hidden');
+            group.classList.remove('animate-in');
+        });
+
+        const selectedGroup = document.getElementById('group-' + groupId);
+        if (selectedGroup) {
+            selectedGroup.classList.remove('hidden');
+            void selectedGroup.offsetWidth; 
+            selectedGroup.classList.add('animate-in');
+        }
+
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
