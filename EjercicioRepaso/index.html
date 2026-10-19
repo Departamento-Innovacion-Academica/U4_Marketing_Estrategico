@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repaso: Plan de Marketing, Mezcla de 7 Ps y Métricas Comerciales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Librería de Confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #054C50; 
+            --primary-dark: #033235; 
+            --primary-light: #e6f0f1; 
+            --accent-border: #b8d4d6;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 17px;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f0f4f4 0%, #dbe7e9 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #main-container {
+            width: 95%;
+            max-width: 1000px;
+            height: 870px; 
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(5, 76, 80, 0.15);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2.5rem 3.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .text-custom { color: var(--primary); }
+        .bg-custom { background-color: var(--primary); }
+        .border-custom { border-color: var(--primary); }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 3.5rem;
+            border-radius: 99px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+        .btn-action:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(5, 76, 80, 0.3);
+        }
+
+        .option-card {
+            transition: all 0.2s ease;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.65);
+            cursor: pointer;
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-card.locked { pointer-events: none; }
+
+        .circle-bar { 
+            fill: none; 
+            stroke: var(--primary); 
+            stroke-width: 10; 
+            stroke-linecap: round; 
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        
+        <!-- PANTALLA INICIAL -->
+        <div id="screen-start" class="scroll-content flex flex-col items-center justify-center text-center animate__animated animate__fadeIn">
+            <span class="px-4 py-1.5 bg-[#e6f0f1] text-custom font-bold text-xs uppercase tracking-widest rounded-full mb-4">Evaluación Interactiva</span>
+            <h1 class="text-4xl font-bold text-custom mb-3 leading-tight">Plan de Marketing, Mezcla de 7 Ps y Métricas</h1>
+            <p class="text-2xl mb-5 text-slate-700 font-semibold">Repaso de Estrategias, Matriz de Ansoff, CAC y Cuadro de Mando</p>
+            <p class="mb-10 max-w-2xl text-slate-600 text-lg">Evalúa tus conocimientos sobre la formulación del plan de marketing, estrategias de Ansoff, gestión de las 7 Ps, presupuesto comercial, cálculo del CAC, tasas de conversión e indicadores clave.</p>
+            <button onclick="startQuiz()" class="btn-action text-xl shadow-lg">INICIAR REPASO</button>
+        </div>
+
+        <!-- PANTALLA DE CUESTIONARIO -->
+        <div id="screen-quiz" class="hidden flex flex-col h-full">
+            <div class="px-14 pt-8 flex justify-between items-center z-10">
+                <span id="q-number" class="font-bold text-custom text-sm tracking-widest uppercase"></span>
+                <div class="w-48 h-2 bg-teal-100/70 rounded-full overflow-hidden backdrop-blur-sm">
+                    <div id="progress-fill" class="h-full bg-custom transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="scroll-content animate__animated animate__fadeIn" id="quiz-body">
+                <p id="q-instruction" class="text-custom font-bold italic mb-2 text-base"></p>
+                
+                <div id="question-text-container" class="mb-6 leading-relaxed text-slate-800">
+                    <h2 id="q-text" class="text-lg font-semibold leading-snug text-slate-800 border-l-4 border-[#054C50] pl-4 py-1 bg-white/50 rounded-r-lg"></h2>
+                </div>
+
+                <!-- CONTENEDOR DE OPCIONES -->
+                <div id="options-container" class="space-y-3"></div>
+
+                <div id="warning-box" class="hidden mt-4 p-4 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-800 font-medium text-sm flex items-center justify-center animate__animated animate__shakeX">
+                    ⚠️ Por favor, selecciona una respuesta antes de continuar.
+                </div>
+
+                <div id="feedback-box" class="hidden mt-6 p-5 rounded-2xl border-2 animate__animated animate__fadeInUp text-base bg-white/85 backdrop-blur-md">
+                    <p id="feedback-title" class="font-bold text-lg mb-1"></p>
+                    <div id="feedback-body" class="leading-relaxed text-slate-700"></div>
+                    <button id="btn-continue" onclick="nextStep()" class="mt-4 bg-slate-800 text-white px-8 py-2 rounded-xl hover:bg-black transition-all font-bold text-sm">Continuar</button>
+                </div>
+
+                <button id="btn-validate" onclick="validateAnswer()" class="btn-action w-full mt-6 shadow-xl text-lg">Validar Respuesta</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS -->
+        <div id="screen-results" class="hidden scroll-content flex flex-col items-center">
+            <h2 class="text-4xl font-bold mb-2 text-custom text-center">Repaso Finalizado</h2>
+            
+            <div class="flex flex-col items-center justify-center my-4">
+                <div class="relative flex items-center justify-center">
+                    <svg class="w-56 h-56 -rotate-90">
+                        <circle cx="112" cy="112" r="95" stroke="rgba(255,255,255,0.6)" stroke-width="10" fill="none"></circle>
+                        <circle id="final-circle" cx="112" cy="112" r="95" class="circle-bar" stroke-dasharray="596" stroke-dashoffset="596"></circle>
+                    </svg>
+                    <div class="absolute text-5xl font-black text-slate-800"><span id="result-percent">0</span>%</div>
+                </div>
+            </div>
+
+            <p id="result-score" class="text-xl font-bold mb-4 text-slate-700 text-center"></p>
+            <div id="result-msg" class="w-full max-w-2xl mb-6 p-5 bg-white/75 rounded-2xl italic text-slate-700 text-base text-center shadow-sm border border-white"></div>
+            
+            <button onclick="location.reload()" class="btn-action mb-8">Reiniciar Repaso</button>
+
+            <div class="w-full max-w-3xl border-t border-teal-100 pt-8 mt-4 text-left">
+                <h3 class="text-2xl font-bold text-custom mb-6 text-center">Revisión de respuestas</h3>
+                <div id="summary-cards" class="space-y-6"></div>
+            </div>
+
+            <button onclick="location.reload()" class="btn-action mt-10 mb-6">Reiniciar Repaso</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                type: "vf",
+                instruction: "Seleccione Verdadero o Falso",
+                question: "1. Un plan de marketing que incluye actividades promocionales y un presupuesto comercial puede formularse sin realizar previamente un diagnóstico del mercado ni definir los clientes a los que se dirige.",
+                options: [
+                    {t: "Verdadero", c: false},
+                    {t: "Falso", c: true}
+                ],
+                feedback: "Las actividades y el presupuesto forman parte del plan, pero deben definirse a partir del conocimiento del mercado y de los clientes que la organización busca atender. Esta información sirve como base para establecer los objetivos y seleccionar las estrategias y acciones que se desarrollarán."
+            },
+            {
+                type: "vf",
+                instruction: "Seleccione Verdadero o Falso",
+                question: "2. Una desviación negativa en un indicador comercial justifica incrementar inmediatamente el presupuesto de promoción para recuperar los resultados esperados.",
+                options: [
+                    {t: "Verdadero", c: false},
+                    {t: "Falso", c: true}
+                ],
+                feedback: "Antes de modificar el presupuesto, deben identificarse las causas de la desviación, que pueden relacionarse con el producto, precio, canales, comunicación, procesos u otras variables."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "3. Una firma que actualmente presta servicios de diseño estructural a clientes empresariales decide incorporar servicios BIM dirigidos a esos mismos clientes. Según la matriz de Ansoff, ¿qué estrategia está desarrollando?",
+                options: [
+                    {t: "Penetración de mercado.", c: false},
+                    {t: "Desarrollo de mercado.", c: false},
+                    {t: "Desarrollo de productos o servicios.", c: true},
+                    {t: "Diversificación.", c: false}
+                ],
+                feedback: "La organización introduce una nueva oferta en un mercado que ya atiende, lo que corresponde al desarrollo de productos o servicios."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "4. Una empresa de consultoría busca ser reconocida por su experiencia en proyectos de infraestructura hospitalaria de alta complejidad. ¿Cuál de las siguientes decisiones respaldaría mejor esta orientación?",
+                options: [
+                    {t: "Ofrecer honorarios inferiores a los de sus competidores como principal argumento comercial.", c: false},
+                    {t: "Ampliar sus servicios para atender el mayor número posible de segmentos.", c: false},
+                    {t: "Contar con profesionales especializados, experiencia comprobable, procesos técnicos adecuados y antecedentes en proyectos similares.", c: true},
+                    {t: "Concentrar sus esfuerzos en campañas publicitarias que destaquen su especialización.", c: false}
+                ],
+                feedback: "Para que la especialización sea reconocida por los clientes, debe estar respaldada por capacidades y experiencia que la empresa pueda demostrar. La comunicación puede ayudar a darla a conocer, pero no reemplaza estos elementos."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "5. Una organización ofrece servicios que presenta como altamente especializados. Sin embargo, su equipo comercial tiene poco conocimiento técnico, las propuestas que entrega son genéricas y la atención al cliente no sigue un proceso claramente definido. Al revisar las 7 Ps, ¿qué situación se observa?",
+                options: [
+                    {t: "Lo que la empresa comunica sobre su servicio no corresponde con la forma en la que algunas de las variables de marketing están siendo gestionadas.", c: true},
+                    {t: "El precio establecido por la empresa es inferior al que corresponde a un servicio especializado.", c: false},
+                    {t: "Los canales digitales utilizados por la empresa dificultan la prestación del servicio.", c: false},
+                    {t: "La evidencia física debería asumir las funciones que actualmente desarrollan las personas y los procesos.", c: false}
+                ],
+                feedback: "Si la empresa ofrece un servicio especializado, esa característica también debería reflejarse en la preparación de su personal, la atención al cliente y los procesos utilizados. Las 7 Ps deben guardar relación con lo que la organización ofrece y comunica al mercado."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "6. Una organización cuenta con recursos limitados para desarrollar su plan de marketing. ¿Qué criterio sería más apropiado para decidir cómo distribuir el presupuesto?",
+                options: [
+                    {t: "Utilizar los mismos porcentajes asignados durante el periodo anterior.", c: false},
+                    {t: "Destinar la misma cantidad de recursos a cada una de las 7 Ps.", c: false},
+                    {t: "Priorizar las actividades de acuerdo con los objetivos del plan, los mercados que se busca atender y los resultados esperados.", c: true},
+                    {t: "Destinar la mayor parte del presupuesto a publicidad digital para aumentar la visibilidad.", c: false}
+                ],
+                feedback: "El presupuesto debe distribuirse de acuerdo con las actividades que la organización necesita desarrollar para alcanzar los objetivos del plan. Esto permite priorizar los recursos disponibles en lugar de asignarlos de manera uniforme o repetir automáticamente la distribución de periodos anteriores."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "7. Una firma invierte $120 millones en actividades de marketing y ventas asociadas con la captación y obtiene 30 nuevos clientes. ¿Cuál es su costo de adquisición de clientes (CAC)?",
+                options: [
+                    {t: "$2 millones.", c: false},
+                    {t: "$4 millones.", c: true},
+                    {t: "$30 millones.", c: false},
+                    {t: "$120 millones.", c: false}
+                ],
+                feedback: "El CAC corresponde a $120 millones ÷ 30 clientes = $4 millones por nuevo cliente."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "8. Una organización registra 200 oportunidades comerciales calificadas durante un periodo y logra convertir 30 de ellas en nuevos contratos. ¿Cuál es su tasa de conversión?",
+                options: [
+                    {t: "6,7 %.", c: false},
+                    {t: "15 %.", c: true},
+                    {t: "30 %.", c: false},
+                    {t: "66,7 %.", c: false}
+                ],
+                feedback: "La tasa de conversión corresponde a (30 ÷ 200) × 100 = 15 %."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "9. Una desarrolladora inmobiliaria cumple su meta de generación de leads calificados, pero presenta una tasa de absorción considerablemente inferior a la prevista. ¿Cuál sería la actuación gerencial más adecuada?",
+                options: [
+                    {t: "Incrementar inmediatamente el presupuesto publicitario.", c: false},
+                    {t: "Analizar el proceso de conversión, el precio, la propuesta de valor y las condiciones comerciales antes de tomar medidas correctivas.", c: true},
+                    {t: "Duplicar automáticamente las comisiones de los intermediarios.", c: false},
+                    {t: "Concluir que el problema se encuentra exclusivamente en la fuerza de ventas.", c: false}
+                ],
+                feedback: "Cumplir las metas de captación, pero no las de venta, exige analizar las etapas posteriores y las demás variables que pueden estar afectando la conversión."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "10. Una organización utiliza un cuadro de mando para evaluar ROMI, satisfacción del cliente, tasa de conversión y adopción del CRM. ¿Cuál es la principal utilidad gerencial de integrar estos indicadores?",
+                options: [
+                    {t: "Sustituir los objetivos SMART definidos en el plan.", c: false},
+                    {t: "Evaluar exclusivamente los resultados financieros de la organización.", c: false},
+                    {t: "Observar el desempeño desde diferentes dimensiones, detectar desviaciones y apoyar decisiones correctivas.", c: true},
+                    {t: "Eliminar la necesidad de realizar un diagnóstico periódico del mercado.", c: false}
+                ],
+                feedback: "El cuadro de mando integra diferentes dimensiones del desempeño y facilita el seguimiento, control y mejora del plan de marketing."
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        const totalPoints = quizData.length; 
+
+        function startQuiz() {
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentIdx];
+            
+            document.getElementById('q-number').innerText = `PREGUNTA ${currentIdx + 1}/${quizData.length}`;
+            document.getElementById('progress-fill').style.width = `${((currentIdx + 1)/quizData.length)*100}%`;
+            document.getElementById('q-instruction').innerText = q.instruction;
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('warning-box').classList.add('hidden');
+            document.getElementById('btn-validate').classList.remove('hidden');
+
+            const optContainer = document.getElementById('options-container');
+            document.getElementById('q-text').innerText = q.question;
+            setupSelectionOptions(q, optContainer);
+        }
+
+        function setupSelectionOptions(q, container) {
+            container.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const d = document.createElement('div');
+                d.className = "option-card flex items-center p-4 rounded-xl mb-2 text-base";
+                d.innerHTML = `
+                    <input type="radio" name="ans" id="o${i}" value="${i}" class="w-5 h-5 accent-[#054C50]">
+                    <label for="o${i}" class="ml-4 w-full cursor-pointer font-medium text-slate-700">${opt.t}</label>
+                `;
+                d.onclick = () => {
+                    document.getElementById('warning-box').classList.add('hidden');
+                    document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+                    d.classList.add('selected');
+                    d.querySelector('input').checked = true;
+                };
+                container.appendChild(d);
+            });
+        }
+
+        function validateAnswer() {
+            const q = quizData[currentIdx];
+            const selectedInput = document.querySelector('input[name="ans"]:checked');
+            
+            if (!selectedInput) { 
+                document.getElementById('warning-box').classList.remove('hidden'); 
+                return; 
+            }
+
+            document.getElementById('warning-box').classList.add('hidden');
+            const chosenVal = parseInt(selectedInput.value);
+            q.userAnswer = chosenVal; 
+
+            const isCorrect = q.options[chosenVal].c;
+            if (isCorrect) {
+                score += 1;
+            }
+            document.querySelectorAll('.option-card').forEach(el => el.classList.add('locked'));
+
+            const fBox = document.getElementById('feedback-box');
+            fBox.classList.remove('hidden', 'border-green-300', 'border-red-300');
+            document.getElementById('btn-validate').classList.add('hidden');
+
+            const fTitle = document.getElementById('feedback-title');
+            if (isCorrect) {
+                fTitle.innerText = "¡Correcto!";
+                fTitle.className = "font-bold text-lg text-green-700";
+                fBox.classList.add('border-green-300');
+            } else {
+                fTitle.innerText = "Incorrecto";
+                fTitle.className = "font-bold text-lg text-red-700";
+                fBox.classList.add('border-red-300');
+            }
+            document.getElementById('feedback-body').innerHTML = `<strong>Realimentación:</strong> ${q.feedback}`;
+        }
+
+        function nextStep() {
+            currentIdx++;
+            if (currentIdx < quizData.length) renderQuestion();
+            else showResults();
+        }
+
+        function showResults() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-results').classList.remove('hidden');
+            
+            const percent = Math.round((score / totalPoints) * 100);
+            const circumference = 596;
+            const offset = circumference - (percent / 100) * circumference;
+            
+            requestAnimationFrame(() => {
+                setTimeout(() => { document.getElementById('final-circle').style.strokeDashoffset = offset; }, 50);
+            });
+            
+            let count = 0;
+            const timer = setInterval(() => {
+                if (count >= percent) {
+                    document.getElementById('result-percent').innerText = percent;
+                    clearInterval(timer);
+                    if(percent === 100) {
+                        confetti({
+                            particleCount: 150,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#054C50', '#ffffff', '#b8d4d6']
+                        });
+                    }
+                } else {
+                    count++;
+                    document.getElementById('result-percent').innerText = count;
+                }
+            }, 15);
+
+            document.getElementById('result-score').innerText = `Puntaje Final: ${score} de ${totalPoints} puntos`;
+            const msg = document.getElementById('result-msg');
+            
+            if (percent === 100) {
+                msg.innerText = "¡Excelente! Dominas a la perfección la estructuración del plan de marketing, la matriz de Ansoff, la alineación de las 7 Ps, el cálculo del CAC y las métricas comerciales.";
+            } else if (percent >= 70) {
+                msg.innerText = "¡Muy buen trabajo! Comprendes de forma sólida la formulación estratégica del plan de marketing y el análisis de métricas comerciales.";
+            } else {
+                msg.innerText = "Te sugerimos repasar la formulación del plan de marketing, el cálculo del CAC y la tasa de conversión, así como el uso del cuadro de mando.";
+            }
+
+            buildSummaryCards();
+        }
+
+        function buildSummaryCards() {
+            const container = document.getElementById('summary-cards');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = "p-6 rounded-2xl border-l-8 bg-white/85 shadow-sm transition-all duration-300 animate__animated animate__fadeInUp backdrop-blur-md";
+                
+                const userAnsIdx = q.userAnswer;
+                const correctAnsIdx = q.options.findIndex(o => o.c);
+                const isFullyCorrect = (userAnsIdx === correctAnsIdx);
+
+                let statusBadge = '';
+                let userValHTML = '';
+                let correctValHTML = '';
+
+                if (isFullyCorrect) {
+                    card.classList.add('border-green-500');
+                    statusBadge = '<span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">Correcto</span>';
+                    userValHTML = `<span class="text-green-700 font-medium">${q.options[userAnsIdx].t}</span>`;
+                } else {
+                    card.classList.add('border-red-500');
+                    statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-full">Incorrecto</span>';
+                    userValHTML = `<span class="text-red-600 font-semibold">${userAnsIdx !== undefined && userAnsIdx !== null ? q.options[userAnsIdx].t : '[Sin responder]'}</span>`;
+                    correctValHTML = `
+                        <div class="text-sm mt-1">
+                            <span class="font-semibold text-slate-500">Respuesta correcta:</span> 
+                            <span class="text-green-700 font-medium">${q.options[correctAnsIdx].t}</span>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Pregunta ${idx + 1}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="font-semibold text-slate-800 mb-3 text-base">${q.question}</div>
+                    
+                    <div class="bg-white/80 p-4 rounded-xl border border-slate-100 space-y-1.5 mb-3 shadow-inner">
+                        <div class="text-sm"><span class="font-semibold text-slate-600">Tu respuesta:</span> ${userValHTML}</div>
+                        ${correctValHTML}
+                    </div>
+                    
+                    <div class="text-sm text-slate-600 bg-teal-50/70 p-3 rounded-xl border border-teal-100">
+                        <strong class="text-custom">Realimentación:</strong> ${q.feedback}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
