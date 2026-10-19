@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mezcla de Mercadotecnia - Las 4 Ps</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              dark: '#0a0f18',
+              card: '#111827',
+              primary: '#054C50',
+              accent: '#00779A',
+              purple: '#483C9A',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      font-style: normal !important;
+    }
+    
+    .glow-effect {
+      box-shadow: 0 0 25px rgba(0, 119, 154, 0.2);
+    }
+    
+    .btn-active {
+      background: linear-gradient(135deg, #054C50 0%, #00779A 100%);
+      border-color: #00779A;
+      box-shadow: 0 4px 20px rgba(0, 119, 154, 0.4);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0f18;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #054C50;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00779A;
+    }
+  </style>
+</head>
+<body class="bg-brand-dark text-slate-100 min-h-screen font-sans flex flex-col justify-between selection:bg-brand-accent selection:text-white">
+
+  <!-- Header -->
+  <header class="w-full bg-slate-900/80 border-b border-slate-800 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <span class="text-xs font-bold tracking-widest text-brand-accent uppercase bg-brand-accent/10 px-3 py-1 rounded-full border border-brand-accent/30">
+          Estrategia de Marketing
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white mt-1">
+          La Mezcla de Mercadotecnia (4 Ps)
+        </h1>
+      </div>
+      
+      <!-- Instructional Box -->
+      <div class="bg-slate-900 border-2 border-brand-accent/60 rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg max-w-md">
+        <div class="bg-brand-accent/20 p-2 rounded-lg text-brand-accent shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7 18.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+          </svg>
+        </div>
+        <p class="text-sm font-bold text-white leading-snug">
+          Haga clic sobre los botones para ampliar la información
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Navigation Buttons -->
+      <nav class="lg:col-span-4 space-y-4">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 px-1 mb-2">
+          Seleccione un pilar:
+        </h2>
+
+        <!-- Button 1: Producto -->
+        <button id="btn-0" onclick="selectPillar(0)" class="nav-btn btn-active w-full text-left p-4 rounded-xl border border-slate-700/60 bg-brand-card hover:border-brand-accent transition-all duration-300 flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-lg bg-brand-primary/80 text-white font-bold flex items-center justify-center text-lg border border-brand-accent/40 group-hover:scale-105 transition-transform">
+              1
+            </span>
+            <div>
+              <h3 class="font-bold text-white text-lg group-hover:text-brand-accent transition-colors">Producto</h3>
+              <p class="text-xs text-slate-300">Bienes, servicios e innovación</p>
+            </div>
+          </div>
+          <svg class="w-5 h-5 text-slate-400 group-hover:text-brand-accent group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <!-- Button 2: Precio -->
+        <button id="btn-1" onclick="selectPillar(1)" class="nav-btn w-full text-left p-4 rounded-xl border border-slate-700/60 bg-brand-card hover:border-brand-accent transition-all duration-300 flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-lg border border-slate-700 group-hover:scale-105 transition-transform">
+              2
+            </span>
+            <div>
+              <h3 class="font-bold text-white text-lg group-hover:text-brand-accent transition-colors">Precio</h3>
+              <p class="text-xs text-slate-300">Valor, ingresos y márgenes</p>
+            </div>
+          </div>
+          <svg class="w-5 h-5 text-slate-400 group-hover:text-brand-accent group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <!-- Button 3: Plaza -->
+        <button id="btn-2" onclick="selectPillar(2)" class="nav-btn w-full text-left p-4 rounded-xl border border-slate-700/60 bg-brand-card hover:border-brand-accent transition-all duration-300 flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-lg border border-slate-700 group-hover:scale-105 transition-transform">
+              3
+            </span>
+            <div>
+              <h3 class="font-bold text-white text-lg group-hover:text-brand-accent transition-colors">Plaza o distribución</h3>
+              <p class="text-xs text-slate-300">Canales e intermediarios</p>
+            </div>
+          </div>
+          <svg class="w-5 h-5 text-slate-400 group-hover:text-brand-accent group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <!-- Button 4: Promoción -->
+        <button id="btn-3" onclick="selectPillar(3)" class="nav-btn w-full text-left p-4 rounded-xl border border-slate-700/60 bg-brand-card hover:border-brand-accent transition-all duration-300 flex items-center justify-between group">
+          <div class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-lg border border-slate-700 group-hover:scale-105 transition-transform">
+              4
+            </span>
+            <div>
+              <h3 class="font-bold text-white text-lg group-hover:text-brand-accent transition-colors">Promoción y comunicación</h3>
+              <p class="text-xs text-slate-300">Difusión y propuesta de valor</p>
+            </div>
+          </div>
+          <svg class="w-5 h-5 text-slate-400 group-hover:text-brand-accent group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </nav>
+
+      <!-- RIGHT COLUMN: Detailed Information Display -->
+      <section class="lg:col-span-8">
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-6 sm:p-8 glow-effect min-h-[480px] flex flex-col justify-between transition-all duration-300">
+          
+          <div>
+            <!-- Header of selected card -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-5 mb-6">
+              <div class="flex items-center gap-3">
+                <span id="display-number" class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary to-brand-accent text-white font-extrabold text-xl flex items-center justify-center shadow-md">
+                  1
+                </span>
+                <div>
+                  <span class="text-xs font-semibold text-brand-accent uppercase tracking-widest">Detalle del pilar</span>
+                  <h2 id="display-title" class="text-2xl sm:text-3xl font-bold text-white">
+                    Producto
+                  </h2>
+                </div>
+              </div>
+              <span id="display-badge" class="hidden sm:inline-block px-3 py-1 bg-brand-purple/20 text-brand-purple border border-brand-purple/40 rounded-full text-xs font-bold">
+                Pilar 1 de 4
+              </span>
+            </div>
+
+            <!-- Main paragraphs container -->
+            <div id="display-content" class="space-y-4 text-slate-100 text-base sm:text-lg leading-relaxed font-normal">
+              <!-- Content inserted dynamically -->
+            </div>
+          </div>
+
+          <!-- Footer controls inside card -->
+          <div class="mt-8 pt-5 border-t border-slate-800/80 flex items-center justify-between">
+            <button id="prev-btn" onclick="prevPillar()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-lg text-sm transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Anterior
+            </button>
+            
+            <div class="text-xs font-semibold text-slate-400">
+              Paso <span id="current-step" class="text-white">1</span> de 4
+            </div>
+
+            <button id="next-btn" onclick="nextPillar()" class="px-4 py-2 bg-brand-primary hover:bg-brand-accent text-white font-semibold rounded-lg text-sm transition-colors flex items-center gap-2">
+              Siguiente
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full bg-slate-950 border-t border-slate-800/60 py-4 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4">
+      Módulo educativo interactivo • Conceptos clave de Mercadotecnia
+    </div>
+  </footer>
+
+  <script>
+    const pillarsData = [
+      {
+        id: 1,
+        title: "Producto",
+        paragraphs: [
+          "El producto comprende el conjunto de bienes, servicios, soluciones y beneficios que la organización ofrece para responder a las necesidades de sus mercados objetivo. En el sector de la construcción puede materializarse en activos inmobiliarios e infraestructura, pero también en servicios de diseño, construcción, consultoría, interventoría, mantenimiento y soluciones especializadas de ingeniería.<br><br>Las decisiones sobre el producto incluyen la definición de sus características, el nivel de calidad, los servicios que lo acompañan y aquellos atributos que pueden distinguirlo de otras opciones. Según el tipo de oferta, también pueden considerarse aspectos relacionados con sostenibilidad o innovación. Todo ello debe responder a lo que la organización busca ofrecer a sus clientes y a la forma en la que quiere ser reconocida en el mercado."
+        ]
+      },
+      {
+        id: 2,
+        title: "Precio",
+        paragraphs: [
+          "El precio define cuánto paga el cliente por el producto o servicio y tiene un efecto directo sobre los ingresos y márgenes de la organización. En el sector de la construcción puede expresarse de distintas formas según el tipo de oferta, por ejemplo, como precio de venta de un inmueble, honorarios profesionales, tarifas, precios unitarios o valores establecidos mediante un contrato.<br><br>Al definir el precio dentro del plan de marketing, la organización debe considerar cuánto está dispuesto a pagar el cliente, los precios de otras alternativas, los costos asociados con la oferta y los resultados económicos que espera obtener. El precio elegido también debe guardar relación con la forma en la que la empresa busca posicionar su producto o servicio en el mercado."
+        ]
+      },
+      {
+        id: 3,
+        title: "Plaza o distribución",
+        paragraphs: [
+          "La distribución define la forma en la que los productos y servicios llegan al mercado y cómo los clientes pueden acceder a ellos. Los canales utilizados varían según el tipo de oferta y pueden incluir venta directa, intermediarios, plataformas digitales, alianzas comerciales o procesos de contratación.<br><br>En el mercado inmobiliario, por ejemplo, la comercialización puede realizarse mediante salas de ventas, inmobiliarias, brokers o plataformas digitales. En los mercados B2B y B2G son más frecuentes el contacto directo con las organizaciones, las convocatorias privadas, las licitaciones y las plataformas utilizadas para gestionar procesos de contratación."
+        ]
+      },
+      {
+        id: 4,
+        title: "Promoción y comunicación",
+        paragraphs: [
+          "La promoción comprende las actividades mediante las cuales la organización comunica su propuesta de valor, fortalece su posicionamiento y estimula la interacción con clientes actuales y potenciales. La selección de herramientas debe responder al mercado objetivo y al tipo de decisión de compra."
+        ]
+      }
+    ];
+
+    let currentIndex = 0;
+
+    function selectPillar(index) {
+      currentIndex = index;
+      const data = pillarsData[currentIndex];
+
+      // Update titles and badge
+      document.getElementById('display-number').textContent = data.id;
+      document.getElementById('display-title').textContent = data.title;
+      document.getElementById('display-badge').textContent = `Pilar ${data.id} de 4`;
+      document.getElementById('current-step').textContent = data.id;
+
+      // Update content paragraphs
+      const contentContainer = document.getElementById('display-content');
+      contentContainer.innerHTML = data.paragraphs.map(p => `<p class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 shadow-inner">${p}</p>`).join('');
+
+      // Update button styling
+      document.querySelectorAll('.nav-btn').forEach((btn, i) => {
+        const numSpan = btn.querySelector('span');
+        if (i === index) {
+          btn.classList.add('btn-active');
+          btn.classList.remove('bg-brand-card');
+          numSpan.className = 'w-10 h-10 rounded-lg bg-brand-primary/80 text-white font-bold flex items-center justify-center text-lg border border-brand-accent/40 group-hover:scale-105 transition-transform';
+        } else {
+          btn.classList.remove('btn-active');
+          btn.classList.add('bg-brand-card');
+          numSpan.className = 'w-10 h-10 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-lg border border-slate-700 group-hover:scale-105 transition-transform';
+        }
+      });
+
+      // Update pagination buttons state
+      document.getElementById('prev-btn').disabled = currentIndex === 0;
+      document.getElementById('next-btn').disabled = currentIndex === pillarsData.length - 1;
+    }
+
+    function nextPillar() {
+      if (currentIndex < pillarsData.length - 1) {
+        selectPillar(currentIndex + 1);
+      }
+    }
+
+    function prevPillar() {
+      if (currentIndex > 0) {
+        selectPillar(currentIndex - 1);
+      }
+    }
+
+    // Initialize first tab
+    selectPillar(0);
+  </script>
+</body>
+</html>
