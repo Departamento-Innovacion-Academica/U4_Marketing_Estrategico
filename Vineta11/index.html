@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarjetas Interactivas de Retos Comerciales</title>
+  <!-- Importación de la fuente Poppins desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f7f6;
+      color: #1d2d35;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      overflow-x: hidden;
+      perspective: 1000px;
+    }
+
+    /* Animación de entrada para la instrucción flotante */
+    .instruction-banner {
+      background: linear-gradient(135deg, #146b69, #0d9488);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 35px;
+      box-shadow: 0 8px 20px rgba(20, 107, 105, 0.3);
+      text-align: left;
+      opacity: 0;
+      animation: bannerEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation-delay: 0.1s;
+    }
+
+    @keyframes bannerEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Contenedor principal de tarjetas */
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .cards-container .card:nth-child(4) {
+      grid-column: 1 / span 1.5;
+    }
+
+    .cards-container .card:nth-child(5) {
+      grid-column: span 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .cards-container .card:nth-child(4),
+      .cards-container .card:nth-child(5) {
+        grid-column: auto;
+      }
+    }
+
+    /* Estilos e impacto en las tarjetas */
+    .card {
+      position: relative;
+      background-color: #ffffff;
+      border: 2px solid #146b69;
+      border-radius: 14px;
+      padding: 36px 28px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                  box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+                  border-color 0.3s ease;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: left; /* Alineación a la izquierda */
+      min-height: 180px;
+      
+      /* Animación de entrada escalonada 3D */
+      opacity: 0;
+      transform: translateY(60px) rotateX(15deg) scale(0.9);
+      animation: cardImpactEntrance 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    /* Tiempos de retardo para efecto cascada */
+    .card:nth-child(1) { animation-delay: 0.25s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.55s; }
+    .card:nth-child(4) { animation-delay: 0.7s; }
+    .card:nth-child(5) { animation-delay: 0.85s; }
+
+    @keyframes cardImpactEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(60px) rotateX(15deg) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg) scale(1);
+      }
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 16px 32px rgba(20, 107, 105, 0.2);
+      border-color: #0d9488;
+    }
+
+    /* Título visible en la tarjeta */
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #146b69;
+      z-index: 2;
+      position: relative;
+      text-align: left; /* Alineación a la izquierda */
+      width: 100%;
+      line-height: 1.4;
+    }
+
+    /* Círculos animados e interactivos */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20, 107, 105, 0.28) 0%, rgba(20, 107, 105, 0.03) 70%);
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+      opacity: 0.5;
+    }
+
+    .circle-1 {
+      width: 130px;
+      height: 130px;
+      top: -35px;
+      right: -35px;
+    }
+
+    .circle-2 {
+      width: 100px;
+      height: 100px;
+      bottom: -25px;
+      left: -25px;
+      background: radial-gradient(circle, rgba(13, 148, 136, 0.22) 0%, rgba(13, 148, 136, 0.02) 70%);
+    }
+
+    .circle-3 {
+      width: 70px;
+      height: 70px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.25;
+    }
+
+    .card:hover .circle {
+      opacity: 0.95;
+    }
+
+    /* Ventana Emergente (Modal) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border: 2px solid #146b69;
+      border-radius: 14px;
+      padding: 36px;
+      max-width: 580px;
+      width: 100%;
+      position: relative;
+      transform: scale(0.85) translateY(30px);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+      text-align: left; /* Alineación a la izquierda */
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      font-size: 1.6rem;
+      color: #64748b;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #146b69;
+      transform: scale(1.15);
+    }
+
+    .modal-text {
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: #1d2d35;
+      text-align: left; /* Alineación a la izquierda */
+    }
+
+    .modal-text strong {
+      color: #146b69;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Instrucción Flotante -->
+  <div class="instruction-banner">
+    Haga clic sobre las tarjetas para ampliar la información.
+  </div>
+
+  <div class="cards-container">
+    <!-- Tarjeta 1 -->
+    <div class="card" onclick="openModal(1)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Bajo cumplimiento de las metas comerciales:</h3>
+    </div>
+
+    <!-- Tarjeta 2 -->
+    <div class="card" onclick="openModal(2)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Elevado costo de adquisición de clientes (CAC):</h3>
+    </div>
+
+    <!-- Tarjeta 3 -->
+    <div class="card" onclick="openModal(3)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Baja tasa de conversión:</h3>
+    </div>
+
+    <!-- Tarjeta 4 -->
+    <div class="card" onclick="openModal(4)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Baja tasa de absorción inmobiliaria:</h3>
+    </div>
+
+    <!-- Tarjeta 5 -->
+    <div class="card" onclick="openModal(5)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Retroalimentación negativa recurrente de los clientes:</h3>
+    </div>
+  </div>
+
+  <!-- Modal Emergente -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <p class="modal-text" id="modalText"></p>
+    </div>
+  </div>
+
+  <script>
+    // Información exacta extraída de la imagen original
+    const infoData = {
+      1: "<strong>Bajo cumplimiento de las metas comerciales:</strong> requiere analizar las causas asociadas con la propuesta de valor, el mercado objetivo, el precio, los canales y la efectividad de las acciones comerciales antes de realizar ajustes.",
+      2: "<strong>Elevado costo de adquisición de clientes (CAC):</strong> puede requerir revisar la eficiencia de los canales utilizados, reasignar recursos hacia aquellos que presenten mejores resultados y optimizar los procesos de captación y conversión.",
+      3: "<strong>Baja tasa de conversión:</strong> puede indicar dificultades en la calidad de las oportunidades comerciales, la propuesta presentada, el seguimiento realizado por la fuerza de ventas o la correspondencia entre la oferta y las necesidades del cliente.",
+      4: "<strong>Baja tasa de absorción inmobiliaria:</strong> puede conducir a revisar las condiciones comerciales, los canales de distribución, el posicionamiento, las características del producto o la correspondencia entre el precio y el valor percibido por el mercado.",
+      5: "<strong>Retroalimentación negativa recurrente de los clientes:</strong> requiere identificar patrones en las inconformidades y determinar si deben realizarse ajustes en el producto o servicio, los procesos de atención, la comunicación o la experiencia proporcionada."
+    };
+
+    function openModal(id) {
+      document.getElementById('modalText').innerHTML = infoData[id];
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function closeModalOnOverlay(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeModal();
+      }
+    }
+
+    // Escuchar la tecla ESC para cerrar la ventana emergente
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'Esc') {
+        closeModal();
+      }
+    });
+
+    // Efecto parallax en los círculos al pasar el puntero
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        const c1 = card.querySelector('.circle-1');
+        const c2 = card.querySelector('.circle-2');
+        const c3 = card.querySelector('.circle-3');
+
+        if (c1) c1.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+        if (c2) c2.style.transform = `translate(${x * -0.22}px, ${y * -0.22}px)`;
+        if (c3) c3.style.transform = `translate(-50%, -50%) translate(${x * 0.12}px, ${y * 0.12}px) scale(1.25)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        const c1 = card.querySelector('.circle-1');
+        const c2 = card.querySelector('.circle-2');
+        const c3 = card.querySelector('.circle-3');
+
+        if (c1) c1.style.transform = 'translate(0, 0)';
+        if (c2) c2.style.transform = 'translate(0, 0)';
+        if (c3) c3.style.transform = 'translate(-50%, -50%) scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>
