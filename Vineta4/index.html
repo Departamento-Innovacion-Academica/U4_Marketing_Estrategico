@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarjetas de Mercados</title>
+  <!-- Importación de la fuente Poppins desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f7f6;
+      color: #1d2d35;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Instrucción Flotante Superior */
+    .instruction-banner {
+      background-color: #ffffff;
+      color: #146b69;
+      border: 1px solid rgba(20, 107, 105, 0.2);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: float 3s ease-in-out infinite;
+      text-align: left;
+    }
+
+    .instruction-banner svg {
+      width: 18px;
+      height: 18px;
+      fill: #146b69;
+      flex-shrink: 0;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    /* Estilos de las tarjetas */
+    .card {
+      position: relative;
+      background-color: #ffffff;
+      border: 2px solid #146b69;
+      border-radius: 12px;
+      padding: 40px 24px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: left; /* Alineación a la izquierda */
+      min-height: 180px;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(20, 107, 105, 0.15);
+    }
+
+    /* Título visible en la tarjeta */
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #146b69;
+      z-index: 2;
+      position: relative;
+      text-align: left; /* Alineación a la izquierda */
+      width: 100%;
+    }
+
+    /* Círculos animados interactivos */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(20, 107, 105, 0.25) 0%, rgba(20, 107, 105, 0.05) 70%);
+      pointer-events: none;
+      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+      opacity: 0.6;
+    }
+
+    .circle-1 {
+      width: 120px;
+      height: 120px;
+      top: -30px;
+      right: -30px;
+    }
+
+    .circle-2 {
+      width: 90px;
+      height: 90px;
+      bottom: -20px;
+      left: -20px;
+      background: radial-gradient(circle, rgba(13, 148, 136, 0.2) 0%, rgba(13, 148, 136, 0.02) 70%);
+    }
+
+    .circle-3 {
+      width: 60px;
+      height: 60px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.3;
+    }
+
+    .card:hover .circle {
+      opacity: 0.9;
+    }
+
+    /* Ventana Emergente (Modal) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border: 2px solid #146b69;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 550px;
+      width: 100%;
+      position: relative;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      text-align: left; /* Alineación a la izquierda */
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #64748b;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #146b69;
+    }
+
+    .modal-text {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #1d2d35;
+      text-align: left; /* Alineación a la izquierda */
+    }
+
+    .modal-text strong {
+      color: #146b69;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Instrucción flotante -->
+  <div class="instruction-banner">
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+    </svg>
+    <span>Haga clic sobre las tarjetas para ampliar la información-</span>
+  </div>
+
+  <div class="cards-container">
+    <!-- Tarjeta 1 -->
+    <div class="card" onclick="openModal(1)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Mercados B2C</h3>
+    </div>
+
+    <!-- Tarjeta 2 -->
+    <div class="card" onclick="openModal(2)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Mercados B2B</h3>
+    </div>
+
+    <!-- Tarjeta 3 -->
+    <div class="card" onclick="openModal(3)">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+      <div class="circle circle-3"></div>
+      <h3 class="card-title">Mercados institucionales</h3>
+    </div>
+  </div>
+
+  <!-- Modal Emergente -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <p class="modal-text" id="modalText"></p>
+    </div>
+  </div>
+
+  <script>
+    // Información exacta extraída de la imagen original
+    const infoData = {
+      1: "<strong>Mercados B2C:</strong> conformados principalmente por consumidores individuales y hogares, como ocurre en buena parte del mercado inmobiliario residencial.",
+      2: "<strong>Mercados B2B:</strong> integrados por empresas y otras organizaciones que demandan productos, obras o servicios de construcción, ingeniería, consultoría o interventoría.",
+      3: "<strong>Mercados institucionales:</strong> constituidos, entre otros, por entidades públicas y organizaciones que adquieren obras o servicios mediante procedimientos y criterios de contratación específicos."
+    };
+
+    function openModal(id) {
+      document.getElementById('modalText').innerHTML = infoData[id];
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function closeModalOnOverlay(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeModal();
+      }
+    }
+
+    // Movimiento parallax dinámico para los círculos al pasar el mouse por encima
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        const c1 = card.querySelector('.circle-1');
+        const c2 = card.querySelector('.circle-2');
+        const c3 = card.querySelector('.circle-3');
+
+        if (c1) c1.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+        if (c2) c2.style.transform = `translate(${x * -0.2}px, ${y * -0.2}px)`;
+        if (c3) c3.style.transform = `translate(-50%, -50%) translate(${x * 0.1}px, ${y * 0.1}px) scale(1.2)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        const c1 = card.querySelector('.circle-1');
+        const c2 = card.querySelector('.circle-2');
+        const c3 = card.querySelector('.circle-3');
+
+        if (c1) c1.style.transform = 'translate(0, 0)';
+        if (c2) c2.style.transform = 'translate(0, 0)';
+        if (c3) c3.style.transform = 'translate(-50%, -50%) scale(1)';
+      });
+    });
+  </script>
+</body>
+</html>
